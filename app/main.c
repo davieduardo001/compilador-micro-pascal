@@ -1,25 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "lexer.h"
-#include "symbol_table.h"
-#include "utils.h"
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <source_file>\n", argv[0]);
-        return EXIT_FAILURE;
+    if (argc < 2) {
+        printf("Uso: %s <arquivo de entrada>\n", argv[0]);
+        return 1;
     }
 
-    const char *sourceFile = argv[1];
-    initializeLexer(sourceFile);
-
-    Token token;
-    while ((token = getNextToken()).nome != NULL) {
-        printf("Token: %s, Lexema: %s, Linha: %d, Coluna: %d\n", 
-               token.nome, token.lexema, token.linha, token.coluna);
+    FILE *arquivo = fopen(argv[1], "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo: %s\n", argv[1]);
+        return 1;
     }
 
-    printSymbolTable(); // Mostrar a tabela de símbolos
-    generateOutputFile("output.lex");
-    return EXIT_SUCCESS;
+    iniciar_tabela_de_simbolos(); // Inicializa palavras reservadas
+    analisar_lexico(arquivo);     // Analisa o arquivo
+
+    fclose(arquivo);
+    return 0;
 }

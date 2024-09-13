@@ -127,6 +127,3 @@ while <expressão> do <comando>
 <variável> ::= 
 <identificador>
 ```
-```
-
-Este formato organiza a informação em seções distintas com títulos e blocos de código mais claros, o que facilita a leitura e compreensão. Se precisar de mais ajustes ou detalhes adicionais, sinta-se à vontade para pedir!

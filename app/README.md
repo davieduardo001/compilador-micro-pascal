@@ -2,5 +2,5 @@
 
 ## Rodando o programa
 
-* **compilando:** `gcc -o lexer main.c lexer.c symbol_table.c utils.c`
-* **rodando:** `./lexer <./caminho/para/o/pascal>`
+* **compilando:** `gcc main.c lexer.c -o lex`
+* **rodando:** `./lexer <./caminho/para/o/pascal.pas>`
