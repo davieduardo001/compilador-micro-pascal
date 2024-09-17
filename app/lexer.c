@@ -248,10 +248,10 @@ Token obter_token(FILE *arquivo) {
     return token;
 }
 
-void analisar_lexico(FILE *arquivo) {
+void analisar_lexico(FILE *arquivo, FILE *saida) {
     Token token;
     do {
         token = obter_token(arquivo);
-        printf("<%s, %s> na linha %d, coluna %d\n", token.nome, token.lexema, token.linha, token.coluna);
+        fprintf(saida, "<%s, %s> na linha %d, coluna %d\n", token.nome, token.lexema, token.linha, token.coluna);
     } while (strcmp(token.nome, "EOF") != 0);
 }
