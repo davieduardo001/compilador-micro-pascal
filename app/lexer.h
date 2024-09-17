@@ -1,19 +1,22 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#define MAX_LEXEMA 100
-#define MAX_NOME 20
+#include <stdio.h>
+
+#define MAX_TOKEN_LENGTH 1000000
 
 typedef struct {
-    char nome[MAX_NOME];
-    char lexema[MAX_LEXEMA];
+    char nome[MAX_TOKEN_LENGTH];
+    char lexema[MAX_TOKEN_LENGTH];
     int linha;
     int coluna;
 } Token;
 
+// Function prototypes
+Token create_token(const char *nome, const char *lexema, int linha, int coluna);
+void skip_whitespace(FILE *arquivo);
+Token obter_token(FILE *arquivo);
 void iniciar_tabela_de_simbolos();
 void analisar_lexico(FILE *arquivo);
-void imprimir_token(Token token);
-void reportar_erro(char *mensagem, int linha, int coluna);
 
 #endif // LEXER_H

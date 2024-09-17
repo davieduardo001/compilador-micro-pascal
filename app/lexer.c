@@ -56,7 +56,10 @@ Token obter_token(FILE *arquivo) {
                 }
             }
 
-            strcpy(token.nome, "ID"); // Caso não seja reservada, é um identificador
+ 
+            strncpy(token.nome, "ID", sizeof(token.nome) - 1);
+            token.nome[sizeof(token.nome) - 1] = '\0';  // Certificar-se que termina com '\0'
+
             token.linha = linha_atual;
             token.coluna = coluna_atual;
             return token;
