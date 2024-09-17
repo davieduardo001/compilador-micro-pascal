@@ -206,23 +206,45 @@ Token obter_token(FILE *arquivo) {
             token.linha = linha_atual;
             token.coluna = coluna_atual;
             return token;
+        } else if (c == '.') {
+            strcpy(token.nome, "SMB_FINAL");
+            token.lexema[0] = '.';
+            token.lexema[1] = '\0';
+            token.linha = linha_atual;
+            token.coluna = coluna_atual;
+            return token;
+        } else if (c == ':') {
+            char next = fgetc(arquivo);
+            coluna_atual++;
+            if (next == '=') {
+                strcpy(token.nome, "SMB_ATT");
+                token.lexema[0] = ':';
+                token.lexema[1] = '=';
+                token.lexema[2] = '\0';
+                token.linha = linha_atual;
+                token.coluna = coluna_atual;
+                return token;
+            } else {
+                ungetc(next, arquivo);
+                strcpy(token.nome, "SMB_COL");
+                token.lexema[0] = ':';
+                token.lexema[1] = '\0';
+                token.linha = linha_atual;
+                token.coluna = coluna_atual;
+                return token;
+            }
         }
 
-        // Caso encontre um caractere inesperado
-        char mensagem[50];
-        sprintf(mensagem, "Caractere desconhecido: '%c'", c);
-        reportar_erro(mensagem, linha_atual, coluna_atual);
+        reportar_erro("Caractere não reconhecido", linha_atual, coluna_atual);
     }
 
-    // Token de fim de arquivo
     strcpy(token.nome, "EOF");
-    strcpy(token.lexema, "EOF");
+    token.lexema[0] = '\0';
     token.linha = linha_atual;
     token.coluna = coluna_atual;
     return token;
 }
 
-// Função para analisar o arquivo inteiro
 void analisar_lexico(FILE *arquivo) {
     Token token;
     do {
