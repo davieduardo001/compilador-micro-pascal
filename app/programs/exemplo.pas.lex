@@ -1,3 +1,5 @@
+Este arquivo foi gerado automaticamente. Arquivo de entrada: ./programs/exemplo.pas
+
 <PALAVRA_RESERVADA, program> na linha 1, coluna 7
 <ID, Exemplo> na linha 1, coluna 15
 <SMB_SEM, ;> na linha 1, coluna 16
@@ -67,7 +69,9 @@
 <ID, x> na linha 20, coluna 12
 <OP_AD, +> na linha 20, coluna 14
 <NUM, 2> na linha 20, coluna 16
+<SMB_SEM, ;> na linha 20, coluna 17
 <PALAVRA_RESERVADA, end> na linha 21, coluna 6
+<SMB_SEM, ;> na linha 21, coluna 7
 <PALAVRA_RESERVADA, end> na linha 22, coluna 3
 <SMB_FINAL, .> na linha 22, coluna 4
-<EOF, > na linha 22, coluna 4
+<EOF, > na linha 23, coluna 0
