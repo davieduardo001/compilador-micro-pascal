@@ -1,66 +1,162 @@
-# Implementação do Analisador Léxico para MicroPascal
+# Analisador Léxico Simples
 
-## Objetivo
+## Descrição
 
-Nesta etapa, você deverá implementar um analisador léxico para a linguagem MicroPascal (m-Pascal), cuja descrição foi mostrada em sala e disponibilizada para download. Seu analisador léxico deverá ser implementado conforme visto em sala de aula, com o auxílio de um autômato finito determinístico. Ele deverá reconhecer um lexema e retornar, a cada chamada, uma struct `token`, representando o token reconhecido de acordo com o lexema encontrado.
+Este projeto implementa um **analisador léxico** que lê um arquivo de código-fonte e reconhece tokens de uma linguagem fictícia. O analisador identifica e categoriza tokens como:
 
-Para facilitar a implementação, uma Tabela de Símbolos (TS) deverá ser usada. Essa tabela conterá, inicialmente, todas as palavras reservadas da linguagem. À medida que novos tokens forem sendo reconhecidos, esses deverão ser consultados na TS antes de serem cadastrados e retornados. Ademais, somente palavras reservadas e identificadores serão cadastrados na TS, não sendo permitido o cadastro de um mesmo token mais de uma vez na TS.
+- **Identificadores**
+- **Palavras reservadas**
+- **Operadores** (`+`, `-`, `*`, `/`, `>`, `<`, `=`, etc.)
+- **Símbolos** (parênteses, chaves, ponto e vírgula, etc.)
+- **Números**
 
-## Requisitos
+O programa recebe um arquivo de entrada, realiza a análise léxica, e gera um arquivo de saída com os tokens identificados.
 
-Seu Analisador Léxico deverá:
+## Funcionalidades
 
-1. Gerar um arquivo (com a extensão `.lex`) com a lista de todos os tokens reconhecidos, assim como mostrar o que está cadastrado na Tabela de Símbolos. No arquivo, deverá aparecer a tupla `<nome, lexema>` assim como linha e coluna do token.
-2. Detectar possíveis erros e reportá-los ao usuário. O programa deverá informar o erro e o local onde ocorreu (linha e coluna). Lembre-se que em análise léxica tem-se 3 tipos de erros:
-   - Caracteres desconhecidos (não esperados ou inválidos)
-   - String não fechada antes de quebra de linha
-   - Comentário não fechado antes do fim de arquivo (este não cabível ao Micro Pascal)
-3. Ignorar espaços em branco, tabulações, quebras de linhas e comentários, pois não são tokens.
+- **Análise léxica**: Identificação de tokens no arquivo de entrada.
+- **Relatório de erros léxicos**: Notificação de caracteres não reconhecidos com a linha e coluna correspondentes.
+- **Suporte a múltiplos tokens**: Identificadores, palavras reservadas, operadores, símbolos e números.
+- **Ajuda**: Opção de exibir informações de uso e lista de tokens suportados.
+- **Geração de arquivo de saída**: Arquivo gerado com a extensão `.lex` que contém os tokens encontrados.
 
-## O que entregar
+## Estrutura do Código
 
-Você deverá entregar nesta etapa:
+### Funções Principais
 
-1. Uma figura apresentando o Autômato Finito Determinístico para reconhecimento dos tokens, conforme visto em sala de aula (dê uma olhada na ferramenta JFLAP: [http://www.jflap.org/](http://www.jflap.org/)).
-2. Todos os arquivos fonte.
-3. Relatório técnico contendo explicações do propósito de todas as structs e funções, assim como testes realizados com programas corretos e errados (no mínimo, 3 certos e 3 errados). Os programas testes deverão ser definidos de acordo com a gramática do MicroPascal.
+#### `int main(int argc, char *argv[])`
+Função principal que coordena a execução do programa.
 
-Os resultados deverão apresentar a saída do Analisador Léxico (a sequência de tokens identificados e o local de sua ocorrência) e os símbolos instalados na Tabela de Símbolos, bem como os erros léxicos encontrados.
+- **Parâmetros**:
+  - `argc`: Contagem de argumentos passados para o programa.
+  - `argv[]`: Lista de argumentos.
+    - `argv[1]`: Arquivo de entrada.
 
-## Regras
+- **Descrição**:
+  - Verifica se o argumento do arquivo de entrada foi fornecido.
+  - Abre o arquivo de entrada e o arquivo de saída.
+  - Inicia a análise léxica chamando `analisar_lexico()`.
+  - Gera um arquivo de saída com os tokens identificados.
 
-- O trabalho deverá ser desenvolvido em grupos de até 5 alunos.
-- Não é permitido o uso de ferramentas para geração do analisador léxico.
-- A implementação deverá ser realizada preferencialmente em C.
-- Trabalhos total ou parcialmente iguais receberão avaliação nula.
-- Ultrapassados cinco (5) dias da data definida para entrega, nenhum trabalho será recebido.
+#### `void exibir_ajuda(const char *nome_programa)`
+Exibe a ajuda detalhada sobre como usar o programa.
 
-## Nomes para os Tokens
+- **Parâmetros**:
+  - `nome_programa`: Nome do programa executável.
 
-### Operadores
+- **Descrição**:
+  - Mostra exemplos de uso, opções suportadas e uma breve explicação sobre os tokens e funcionalidades.
 
-- `OP_EQ`: =
-- `OP_GE`: >=
-- `OP_MUL`: *
-- `OP_NE`: <>
-- `OP_LE`: <=
-- `OP_DIV`: /
-- `OP_GT`: >
-- `OP_AD`: +
-- `OP_ASS`: =
-- `OP_LT`: <
-- `OP_MIN`: -
+#### `void exibir_lista_de_tokens()`
+Exibe uma lista de todos os tokens suportados pelo compilador.
 
-### Símbolos
+- **Descrição**:
+  - Lista palavras reservadas, operadores, símbolos e outros tokens como identificadores e números.
 
-- `SMB_OBC`: {
-- `SMB_COM`: ,
-- `SMB_CBC`: }
-- `SMB_SEM`: ;
-- `SMB_OPA`: (
-- `SMB_CPA`: )
+#### `void analisar_lexico(FILE *arquivo, FILE *saida)`
+Função responsável por analisar léxicamente o arquivo de entrada.
 
-### Palavras-chave
+- **Parâmetros**:
+  - `arquivo`: Ponteiro para o arquivo de entrada.
+  - `saida`: Ponteiro para o arquivo de saída onde os tokens serão gravados.
+
+- **Descrição**:
+  - Lê o arquivo de entrada e identifica tokens como palavras reservadas, identificadores, operadores, números e símbolos.
+  - Os tokens são gravados no arquivo de saída no formato `<TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y`.
+
+#### `Token obter_token(FILE *arquivo)`
+Função que obtém o próximo token do arquivo de entrada.
+
+- **Parâmetros**:
+  - `arquivo`: Ponteiro para o arquivo de entrada.
+
+- **Retorno**:
+  - `Token`: Estrutura que contém o nome e o lexema do token, assim como sua posição no arquivo.
+
+- **Descrição**:
+  - Lê caracteres do arquivo e identifica se o token é um identificador, palavra reservada, número, operador ou símbolo.
+  - Retorna o token identificado.
+
+#### `void iniciar_tabela_de_simbolos()`
+Inicializa a tabela de símbolos com as palavras reservadas da linguagem.
+
+- **Descrição**:
+  - Prepara a tabela com as palavras reservadas da linguagem, como `program`, `var`, `integer`, etc.
+
+#### `void reportar_erro(char *mensagem, int linha, int coluna)`
+Reporta um erro léxico quando um caractere não reconhecido é encontrado.
+
+- **Parâmetros**:
+  - `mensagem`: Descrição do erro.
+  - `linha`: Linha onde o erro ocorreu.
+  - `coluna`: Coluna onde o erro ocorreu.
+
+- **Descrição**:
+  - Exibe uma mensagem de erro na cor vermelha, indicando o erro léxico e sua posição no arquivo.
+
+### Estruturas
+
+#### `typedef struct Token`
+Estrutura que representa um token.
+
+- **Campos**:
+  - `char nome[MAX_TOKEN_LENGTH]`: Nome do token (ex: `ID`, `NUM`, `OP_AD`).
+  - `char lexema[MAX_TOKEN_LENGTH]`: Lexema correspondente ao token.
+  - `int linha`: Linha onde o token foi encontrado.
+  - `int coluna`: Coluna onde o token foi encontrado.
+
+### Arquivo de Saída
+
+O programa gera um arquivo de saída com o nome do arquivo de entrada acrescido da extensão `.lex`. O arquivo contém uma linha para cada token identificado, no seguinte formato:
+
+```
+<TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y
+```
+
+Exemplo:
+```
+<ID, program> na linha 1, coluna 1
+<ID, main> na linha 1, coluna 8
+<SMB_OPA, ( > na linha 1, coluna 13
+...
+```
+
+## Executando o Programa
+
+### Sintaxe
+
+```bash
+./analisador_lexico <arquivo_de_entrada>
+```
+
+### Opções
+
+- `-h` ou `--help`: Exibe a mensagem de ajuda.
+- `--tokens`: Exibe a lista de tokens suportados pelo compilador.
+
+### Exemplos
+
+1. Para analisar um arquivo de código-fonte:
+
+```bash
+./analisador_lexico programa.txt
+```
+
+2. Para exibir a lista de tokens suportados:
+
+```bash
+./analisador_lexico --tokens
+```
+
+3. Para exibir a ajuda:
+
+```bash
+./analisador_lexico --help
+```
+
+## Tokens Suportados
+
+### Palavras Reservadas
 
 - `program`
 - `var`
@@ -73,48 +169,57 @@ Os resultados deverão apresentar a saída do Analisador Léxico (a sequência d
 - `else`
 - `while`
 - `do`
+- `write`
+- `read`
 
-### Identificadores
+### Operadores
 
-- `ID`
+- `+` (Adição)
+- `-` (Subtração)
+- `*` (Multiplicação)
+- `/` (Divisão)
+- `=` (Atribuição)
+- `>` (Maior que)
+- `>=` (Maior ou igual)
+- `<` (Menor que)
+- `<=` (Menor ou igual)
+- `<>` (Diferente)
+- `:=` (Atribuição)
 
-## Outras Características de MicroPascal
+### Símbolos
 
-- As palavras-chave de MicroPascal são reservadas.
-- Toda variável deve ser declarada antes do seu uso.
-- A linguagem não permite o uso de comentários.
-- A semântica dos demais comandos e expressões é a tradicional do Pascal.
-- A linguagem não é case-sensitive.
+- `;` (Ponto e vírgula)
+- `,` (Vírgula)
+- `{` (Chave de abertura)
+- `}` (Chave de fechamento)
+- `(` (Parêntese de abertura)
+- `)` (Parêntese de fechamento)
+- `.` (Ponto final)
+- `:` (Dois pontos)
 
-## Exemplo de Programa
+### Outros Tokens
 
-O programa a seguir se chama `Exemplo`, as variáveis `x` e `y` são declaradas como do tipo `integer`, enquanto `z` é do tipo `real`. Além disso, o bloco principal do programa contém:
+- `ID` (Identificadores)
+- `NUM` (Números)
 
-- Atribuições às variáveis (`x`, `y`, `z`).
-- Um comando condicional `if` que compara `x` e `y`.
-- Um laço `while` que multiplica `z` por 1.5 até que `z` seja maior que 100, ao mesmo tempo que incrementa `x`.
+## Relatório de Erros Léxicos
 
-```pascal
-program Exemplo;
+Se o analisador léxico encontrar um caractere inválido no arquivo de entrada, ele gera uma mensagem de erro como esta:
 
-var
-   x, y : integer;
-   z : real;
-
-begin
-   x := 10;
-   y := 20;
-   z := x + y * 2.5;
-
-   if x > y then
-      x := x - 1
-   else
-      y := y + 1;
-
-   while z <= 100 do
-   begin
-      z := z * 1.5;
-      x := x + 2
-   end
-end.
 ```
+Erro léxico: Caractere não reconhecido na linha X, coluna Y
+```
+
+## Requisitos
+
+- **Compilador**: Para compilar este programa, é necessário um compilador C, como o GCC.
+  
+  Exemplo de comando para compilação:
+
+  ```bash
+  gcc -o analisador_lexico lexer.c
+  ```
+
+## Autores
+
+Este código foi desenvolvido como parte de um projeto de desenvolvimento de um compilador.
