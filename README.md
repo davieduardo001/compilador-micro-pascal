@@ -166,6 +166,85 @@ O analisador gera mensagens de erro como:
 Erro léxico: Caractere inválido na linha X, coluna Y
 ```
 
+## Exemplos de programas
+
+### Programa Corretos
+
+1. **Programa 1: Simples Atribuição**
+   ```pascal
+   program Teste1;
+   var
+      a: integer;
+   begin
+      a := 10;
+      writeln(a);
+   end.
+   ```
+
+2. **Programa 2: Condicional**
+   ```pascal
+   program Teste2;
+   var
+      x: real;
+   begin
+      x := 5.5;
+      if x > 5 then
+         writeln('x é maior que 5');
+   end.
+   ```
+
+3. **Programa 3: Laço While**
+   ```pascal
+   program Teste3;
+   var
+      i: integer;
+   begin
+      i := 1;
+      while i <= 10 do
+      begin
+         writeln(i);
+         i := i + 1;
+      end;
+   end.
+   ```
+
+### Programas com Erros Léxicos
+
+1. **Erro 1: Caractere Inválido**
+   ```pascal
+   program TesteErro1;
+   var
+      a: integer;
+   begin
+      a := 10$; // Caractere inválido '$'
+      writeln(a);
+   end.
+   ```
+
+2. **Erro 2: Identificador Inválido**
+   ```pascal
+   program TesteErro2;
+   var
+      1a: integer; // Identificador não pode começar com número
+   begin
+      1a := 5;
+      writeln(1a);
+   end.
+   ```
+
+3. **Erro 3: Operador Inválido**
+   ```pascal
+   program TesteErro3;
+   var
+      b: integer;
+   begin
+      b := 10 & 5; // Operador inválido '&'
+      writeln(b);
+   end.
+   ```
+
+Esses exemplos fornecem uma boa variedade para testar o seu analisador léxico. Se precisar de mais alguma coisa, é só avisar!
+
 ## Requisitos
 
 - **Compilador C**: GCC ou equivalente para compilar o projeto.
