@@ -225,10 +225,11 @@ Erro léxico: Caractere inválido na linha X, coluna Y
    ```pascal
    program TesteErro2;
    var
-      1a: integer; // Identificador não pode começar com número
+   #& // nn existe no analizador lexico
+      a: integer; 
    begin
-      1a := 5;
-      writeln(1a);
+      a := 5;
+      writeln(a);
    end.
    ```
 
