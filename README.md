@@ -1,113 +1,87 @@
-# Analisador Léxico Simples
+# Analisador Léxico para MicroPascal
 
 ## Descrição
 
-Este projeto implementa um **analisador léxico** que lê um arquivo de código-fonte e reconhece tokens de uma linguagem fictícia. O analisador identifica e categoriza tokens como:
+Este projeto implementa um **analisador léxico** para a linguagem **MicroPascal**, responsável por ler um arquivo de código-fonte, identificar tokens e categorizá-los de acordo com a gramática da linguagem. Os tokens reconhecidos incluem:
 
 - **Identificadores**
 - **Palavras reservadas**
 - **Operadores** (`+`, `-`, `*`, `/`, `>`, `<`, `=`, etc.)
 - **Símbolos** (parênteses, chaves, ponto e vírgula, etc.)
-- **Números**
+- **Números** (inteiros e reais)
 
-O programa recebe um arquivo de entrada, realiza a análise léxica, e gera um arquivo de saída com os tokens identificados.
+O analisador lê o arquivo de entrada, realiza a análise léxica e gera um arquivo de saída contendo a lista dos tokens identificados, suas respectivas posições no código e a tabela de símbolos.
+
+## Diagrama do AFD
+
+O diagrama abaixo ilustra o Automato Finito Determinístico (AFD) usado para reconhecer tokens na linguagem MicroPascal. Ele mostra como o analisador léxico identifica diferentes tokens a partir de seus estados e transições.
+
+[![](https://mermaid.ink/img/pako:eNqNVE2P2jAQ_SsjSyttq0DzRUxctFLVXnotPXXDwZsY1hLYke2g3SJ-TQ899dhfwB-rEzsk0O6qPoDy3sybyZtxDqiUFUMEaUMN-8TpRtHdZB8XAuy5f7uCyeQOliGBz-L0q-SyEI5aho6JCNRKtlkejxweE1jwignD17yklVR3no8dnxB475HEISmBPVUeSx02e0ll5viMQIEqyTXUUhipC-T5zPGYABeGbZiCd6AY3Xoan-UDuJWNUfK6zpvLyPnQ7twhOYEHtuG9Hbm3wzq1KOWOikr6Xt1v52_Lw8EBY38_GMUfGltZ2mzqHk4_Tz96ifYMMV3KR1fD_tVSGzlUhdJDo9yr4EsBUXE7V0G3Fxpn9F8yZ3Ks9IXVzHDD9-Nm1Bn8W2dIuDLh9cav445jm1uD3SCiYWJnzC4lE1WPuk20MyAwHWvc3MBXRYVuR_CbaZB197JcO_oFF7qK92yr2bAAq__NEHbW9h4xbVeQrfo7ZhvpcnwfNVUUvLQeOXvZ15WrrsiCPbXqul0psGMZd4gCtGNqR3llPwPdchbIPLIdK1B3u9iaNlvT3qyjDaWNkctnUSJiVMMCpGSzeURkTe1rBKipq-Ez0ofUVCByQE-IxFkyTWchTjDOsnke4SRAz4hMktk0xPM0x1GSR3GSz48B-i6lVYgsgcM0TTKM8zC2p9P71pGt_PEPTZV1Eg?type=png)](https://mermaid.live/edit#pako:eNqNVE2P2jAQ_SsjSyttq0DzRUxctFLVXnotPXXDwZsY1hLYke2g3SJ-TQ899dhfwB-rEzsk0O6qPoDy3sybyZtxDqiUFUMEaUMN-8TpRtHdZB8XAuy5f7uCyeQOliGBz-L0q-SyEI5aho6JCNRKtlkejxweE1jwignD17yklVR3no8dnxB475HEISmBPVUeSx02e0ll5viMQIEqyTXUUhipC-T5zPGYABeGbZiCd6AY3Xoan-UDuJWNUfK6zpvLyPnQ7twhOYEHtuG9Hbm3wzq1KOWOikr6Xt1v52_Lw8EBY38_GMUfGltZ2mzqHk4_Tz96ifYMMV3KR1fD_tVSGzlUhdJDo9yr4EsBUXE7V0G3Fxpn9F8yZ3Ks9IXVzHDD9-Nm1Bn8W2dIuDLh9cav445jm1uD3SCiYWJnzC4lE1WPuk20MyAwHWvc3MBXRYVuR_CbaZB197JcO_oFF7qK92yr2bAAq__NEHbW9h4xbVeQrfo7ZhvpcnwfNVUUvLQeOXvZ15WrrsiCPbXqul0psGMZd4gCtGNqR3llPwPdchbIPLIdK1B3u9iaNlvT3qyjDaWNkctnUSJiVMMCpGSzeURkTe1rBKipq-Ez0ofUVCByQE-IxFkyTWchTjDOsnke4SRAz4hMktk0xPM0x1GSR3GSz48B-i6lVYgsgcM0TTKM8zC2p9P71pGt_PEPTZV1Eg)
 
 ## Funcionalidades
 
-- **Análise léxica**: Identificação de tokens no arquivo de entrada.
-- **Relatório de erros léxicos**: Notificação de caracteres não reconhecidos com a linha e coluna correspondentes.
-- **Suporte a múltiplos tokens**: Identificadores, palavras reservadas, operadores, símbolos e números.
-- **Ajuda**: Opção de exibir informações de uso e lista de tokens suportados.
-- **Geração de arquivo de saída**: Arquivo gerado com a extensão `.lex` que contém os tokens encontrados.
+- **Análise léxica completa**: Reconhecimento de tokens válidos conforme as regras da linguagem MicroPascal.
+- **Relatório de erros léxicos**: Detecção e notificação de caracteres inválidos, strings e comentários não fechados, com indicação precisa da linha e coluna.
+- **Tabela de símbolos**: Armazena palavras reservadas e identificadores únicos.
+- **Ignora espaços e comentários**: Espaços em branco, quebras de linha e comentários são ignorados durante a análise.
+- **Arquivo de saída**: Geração de arquivo `.lex` com tokens reconhecidos e sua posição no código.
 
 ## Estrutura do Código
 
 ### Funções Principais
 
 #### `int main(int argc, char *argv[])`
-Função principal que coordena a execução do programa.
+Coordena a execução do analisador léxico.
 
 - **Parâmetros**:
-  - `argc`: Contagem de argumentos passados para o programa.
+  - `argc`: Número de argumentos passados ao programa.
   - `argv[]`: Lista de argumentos.
     - `argv[1]`: Arquivo de entrada.
 
 - **Descrição**:
-  - Verifica se o argumento do arquivo de entrada foi fornecido.
-  - Abre o arquivo de entrada e o arquivo de saída.
-  - Inicia a análise léxica chamando `analisar_lexico()`.
-  - Gera um arquivo de saída com os tokens identificados.
+  - Verifica a presença de um arquivo de entrada.
+  - Abre o arquivo de entrada e cria o arquivo de saída.
+  - Realiza a análise chamando `analisar_lexico()`.
 
 #### `void exibir_ajuda(const char *nome_programa)`
-Exibe a ajuda detalhada sobre como usar o programa.
+Exibe instruções detalhadas sobre como usar o analisador.
 
 - **Parâmetros**:
-  - `nome_programa`: Nome do programa executável.
-
-- **Descrição**:
-  - Mostra exemplos de uso, opções suportadas e uma breve explicação sobre os tokens e funcionalidades.
+  - `nome_programa`: Nome do executável.
 
 #### `void exibir_lista_de_tokens()`
-Exibe uma lista de todos os tokens suportados pelo compilador.
-
-- **Descrição**:
-  - Lista palavras reservadas, operadores, símbolos e outros tokens como identificadores e números.
+Mostra a lista de tokens reconhecidos pelo analisador.
 
 #### `void analisar_lexico(FILE *arquivo, FILE *saida)`
-Função responsável por analisar léxicamente o arquivo de entrada.
-
-- **Parâmetros**:
-  - `arquivo`: Ponteiro para o arquivo de entrada.
-  - `saida`: Ponteiro para o arquivo de saída onde os tokens serão gravados.
+Realiza a análise léxica do arquivo de entrada e escreve os tokens no arquivo de saída.
 
 - **Descrição**:
-  - Lê o arquivo de entrada e identifica tokens como palavras reservadas, identificadores, operadores, números e símbolos.
-  - Os tokens são gravados no arquivo de saída no formato `<TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y`.
+  - Processa o arquivo, identificando e categorizando os tokens.
+  - Tokens são gravados no arquivo no formato `<TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y`.
 
 #### `Token obter_token(FILE *arquivo)`
-Função que obtém o próximo token do arquivo de entrada.
-
-- **Parâmetros**:
-  - `arquivo`: Ponteiro para o arquivo de entrada.
-
-- **Retorno**:
-  - `Token`: Estrutura que contém o nome e o lexema do token, assim como sua posição no arquivo.
-
-- **Descrição**:
-  - Lê caracteres do arquivo e identifica se o token é um identificador, palavra reservada, número, operador ou símbolo.
-  - Retorna o token identificado.
+Identifica e retorna o próximo token do arquivo de entrada.
 
 #### `void iniciar_tabela_de_simbolos()`
-Inicializa a tabela de símbolos com as palavras reservadas da linguagem.
-
-- **Descrição**:
-  - Prepara a tabela com as palavras reservadas da linguagem, como `program`, `var`, `integer`, etc.
+Inicializa a tabela de símbolos com as palavras reservadas da linguagem MicroPascal.
 
 #### `void reportar_erro(char *mensagem, int linha, int coluna)`
-Reporta um erro léxico quando um caractere não reconhecido é encontrado.
-
-- **Parâmetros**:
-  - `mensagem`: Descrição do erro.
-  - `linha`: Linha onde o erro ocorreu.
-  - `coluna`: Coluna onde o erro ocorreu.
-
-- **Descrição**:
-  - Exibe uma mensagem de erro na cor vermelha, indicando o erro léxico e sua posição no arquivo.
+Exibe uma mensagem de erro com a linha e a coluna do problema.
 
 ### Estruturas
 
 #### `typedef struct Token`
-Estrutura que representa um token.
+Estrutura que define um token.
 
 - **Campos**:
-  - `char nome[MAX_TOKEN_LENGTH]`: Nome do token (ex: `ID`, `NUM`, `OP_AD`).
-  - `char lexema[MAX_TOKEN_LENGTH]`: Lexema correspondente ao token.
-  - `int linha`: Linha onde o token foi encontrado.
-  - `int coluna`: Coluna onde o token foi encontrado.
+  - `char nome[MAX_TOKEN_LENGTH]`: Nome do token.
+  - `char lexema[MAX_TOKEN_LENGTH]`: Lexema do token.
+  - `int linha`: Linha do token.
+  - `int coluna`: Coluna do token.
 
 ### Arquivo de Saída
 
-O programa gera um arquivo de saída com o nome do arquivo de entrada acrescido da extensão `.lex`. O arquivo contém uma linha para cada token identificado, no seguinte formato:
+O arquivo de saída é gerado com o nome do arquivo de entrada acrescido da extensão `.lex`. Contém uma linha para cada token reconhecido, no seguinte formato:
 
 ```
 <TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y
@@ -116,8 +90,8 @@ O programa gera um arquivo de saída com o nome do arquivo de entrada acrescido 
 Exemplo:
 ```
 <ID, program> na linha 1, coluna 1
-<ID, main> na linha 1, coluna 8
-<SMB_OPA, ( > na linha 1, coluna 13
+<ID, exemplo> na linha 1, coluna 9
+<SMB_OPA, ( > na linha 1, coluna 16
 ...
 ```
 
@@ -131,46 +105,28 @@ Exemplo:
 
 ### Opções
 
-- `-h` ou `--help`: Exibe a mensagem de ajuda.
-- `--tokens`: Exibe a lista de tokens suportados pelo compilador.
+- `-h` ou `--help`: Exibe a ajuda.
+- `--tokens`: Lista os tokens suportados.
 
 ### Exemplos
 
-1. Para analisar um arquivo de código-fonte:
+1. Para analisar um arquivo de código MicroPascal:
 
 ```bash
-./analisador_lexico programa.txt
+./analisador_lexico programa.pas
 ```
 
-2. Para exibir a lista de tokens suportados:
+2. Para listar os tokens reconhecidos:
 
 ```bash
 ./analisador_lexico --tokens
-```
-
-3. Para exibir a ajuda:
-
-```bash
-./analisador_lexico --help
 ```
 
 ## Tokens Suportados
 
 ### Palavras Reservadas
 
-- `program`
-- `var`
-- `integer`
-- `real`
-- `begin`
-- `end`
-- `if`
-- `then`
-- `else`
-- `while`
-- `do`
-- `write`
-- `read`
+- `program`, `var`, `integer`, `real`, `begin`, `end`, `if`, `then`, `else`, `while`, `do`, `write`, `read`
 
 ### Operadores
 
@@ -204,22 +160,18 @@ Exemplo:
 
 ## Relatório de Erros Léxicos
 
-Se o analisador léxico encontrar um caractere inválido no arquivo de entrada, ele gera uma mensagem de erro como esta:
+O analisador gera mensagens de erro como:
 
 ```
-Erro léxico: Caractere não reconhecido na linha X, coluna Y
+Erro léxico: Caractere inválido na linha X, coluna Y
 ```
 
 ## Requisitos
 
-- **Compilador**: Para compilar este programa, é necessário um compilador C, como o GCC.
-  
-  Exemplo de comando para compilação:
+- **Compilador C**: GCC ou equivalente para compilar o projeto.
+
+  Exemplo de comando:
 
   ```bash
-  gcc -o analisador_lexico lexer.c
+  gcc -o analisador_lexico lexer.c main.c
   ```
-
-## Autores
-
-Este código foi desenvolvido como parte de um projeto de desenvolvimento de um compilador.
