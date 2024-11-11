@@ -1,35 +1,21 @@
+// main.c
+
 #include <stdio.h>
-#include <stddef.h> // Para NULL
-#include <stdlib.h> // Para outras utilidades
-#include <string.h> // Para manipulação de strings
+#include <stdlib.h>
+#include <string.h>
 #include "lexer.h"
+#include "parser.h"
 
 // Função para exibir a ajuda detalhada
 void exibir_ajuda(const char *nome_programa) {
     printf("Uso: %s <arquivo de entrada>\n", nome_programa);
     printf("\n");
-    printf("Este programa realiza a análise léxica de um arquivo de entrada, identificando tokens como:\n");
-    printf("  - Identificadores\n");
-    printf("  - Palavras reservadas\n");
-    printf("  - Operadores (+, -, *, /, >, <, =, etc.)\n");
-    printf("  - Símbolos (parênteses, chaves, ponto e vírgula, etc.)\n");
-    printf("\n");
-    printf("Durante o processamento, o programa gera um arquivo de saída com a extensão \".lex\", que contém os tokens\n");
-    printf("identificados no seguinte formato: <TOKEN_NOME, TOKEN_LEXEMA> na linha X, coluna Y.\n");
+    printf("Este programa realiza a análise léxica e sintática de um arquivo de entrada, identificando tokens e verificando a conformidade sintática.\n");
     printf("\nOpções:\n");
     printf("  -h, --help         Exibe esta mensagem de ajuda\n");
     printf("  --tokens           Exibe a lista de tokens suportados\n");
     printf("\nExemplo de uso:\n");
     printf("  %s programa.txt\n", nome_programa);
-    printf("\nDetalhes das funcionalidades:\n");
-    printf("  - Análise léxica: O programa lê o arquivo de entrada e identifica os tokens presentes.\n");
-    printf("  - Tokens suportados:\n");
-    printf("    * Palavras reservadas: program, var, integer, real, begin, end, if, then, else, while, do, write, read\n");
-    printf("    * Operadores: +, -, *, /, >, >=, <, <=, <>, =, :=\n");
-    printf("    * Símbolos: ; , { } ( ) . :\n");
-    printf("  - Tratamento de erros: Se encontrar um caractere inválido, o programa reporta um erro léxico com a linha e coluna.\n");
-    printf("  - Geração de arquivo de saída: A saída é gerada em um arquivo com o mesmo nome do arquivo de entrada, mas com a\n");
-    printf("    extensão \".lex\" contendo os tokens identificados.\n");
 }
 
 // Função para exibir a lista de tokens suportados pelo compilador
@@ -49,7 +35,7 @@ void exibir_lista_de_tokens() {
     printf("    * do\n");
     printf("    * write\n");
     printf("    * read\n");
-    
+
     printf("\n  Operadores:\n");
     printf("    * +    (Adição)\n");
     printf("    * -    (Subtração)\n");
@@ -62,7 +48,7 @@ void exibir_lista_de_tokens() {
     printf("    * <=   (Menor ou igual)\n");
     printf("    * <>   (Diferente)\n");
     printf("    * :=   (Atribuição)\n");
-    
+
     printf("\n  Símbolos:\n");
     printf("    * ;    (Ponto e vírgula)\n");
     printf("    * ,    (Vírgula)\n");
@@ -72,7 +58,7 @@ void exibir_lista_de_tokens() {
     printf("    * )    (Parêntese de fechamento)\n");
     printf("    * .    (Ponto final)\n");
     printf("    * :    (Dois pontos)\n");
-    
+
     printf("\n  Outros tokens:\n");
     printf("    * ID   (Identificadores)\n");
     printf("    * NUM  (Números)\n");
@@ -105,7 +91,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Cria o nome do arquivo de saída com a extensão .out
+    // Cria o nome do arquivo de saída com a extensão .lex
     char arquivo_saida_nome[256];
     snprintf(arquivo_saida_nome, sizeof(arquivo_saida_nome), "%s.lex", argv[1]);
 
@@ -125,5 +111,18 @@ int main(int argc, char *argv[]) {
 
     printf("Processamento concluído. Saída gerada em: %s\n", arquivo_saida_nome);
 
+    // Reabra o arquivo de entrada para análise sintática
+    arquivo_entrada = fopen(argv[1], "r");
+    if (arquivo_entrada == NULL) {
+        fprintf(stderr, "Não foi possível reabrir o arquivo de entrada: %s\n", argv[1]);
+        perror("Erro");
+        return 1;
+    }
+
+    // Chamar o parser para análise sintática
+    parser(arquivo_entrada, arquivo_saida);
+    fclose(arquivo_entrada);
+
+    printf("Análise sintática concluída.\n");
     return 0;
 }

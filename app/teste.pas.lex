@@ -1,6 +1,5 @@
 <PALAVRA_RESERVADA, program> na linha 1, coluna 7
 <ID, Exemplo> na linha 1, coluna 15
-<SMB_SEM, ;> na linha 1, coluna 16
 <PALAVRA_RESERVADA, var> na linha 3, coluna 3
 <ID, x> na linha 4, coluna 4
 <SMB_COM, ,> na linha 4, coluna 5
@@ -72,4 +71,4 @@
 <SMB_SEM, ;> na linha 21, coluna 7
 <PALAVRA_RESERVADA, end> na linha 22, coluna 3
 <SMB_FINAL, .> na linha 22, coluna 4
-<EOF, > na linha 22, coluna 4
+<EOF, > na linha 23, coluna 0

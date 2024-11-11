@@ -253,5 +253,5 @@ Esses exemplos fornecem uma boa variedade para testar o seu analisador léxico. 
   Exemplo de comando:
 
   ```bash
-  gcc -o analisador_lexico lexer.c main.c
+  gcc -o analisador_lexico lexer.c main.c parser.c
   ```

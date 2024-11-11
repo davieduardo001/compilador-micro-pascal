@@ -1,11 +1,14 @@
+// lexer.c
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include "lexer.h"
+#include <stdlib.h>
 
 // Variáveis globais para controlar a linha e coluna atuais
 int linha_atual = 1;
 int coluna_atual = 0;
+int erro_encontrado = 0;
 
 // Tabela de símbolos para palavras reservadas
 char *palavras_reservadas[] = {"program", "var", "integer", "real", "begin", "end", "if", "then", "else", "while", "do", "write", "read", NULL};
@@ -18,6 +21,7 @@ void iniciar_tabela_de_simbolos() {
 // Função para imprimir erros léxicos
 void reportar_erro(char *mensagem, int linha, int coluna) {
     printf("\033[31mErro léxico: %s na linha %d, coluna %d\033[0m\n", mensagem, linha, coluna);
+    erro_encontrado = 1;
 }
 
 Token obter_token(FILE *arquivo) {
@@ -252,6 +256,14 @@ void analisar_lexico(FILE *arquivo, FILE *saida) {
     Token token;
     do {
         token = obter_token(arquivo);
+        
+        if (erro_encontrado) {
+            printf("Análise léxica interrompida devido a erro.\n");
+            fclose(saida); 
+            remove("saida.txt"); 
+            exit(EXIT_FAILURE);
+        }
+        
         fprintf(saida, "<%s, %s> na linha %d, coluna %d\n", token.nome, token.lexema, token.linha, token.coluna);
     } while (strcmp(token.nome, "EOF") != 0);
 }

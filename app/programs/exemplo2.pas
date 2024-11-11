@@ -3,7 +3,6 @@ program Exemplo;
 var
    x, y : integer;
    z : real;
-   &
 begin
    x := 10;
    y := 20;
